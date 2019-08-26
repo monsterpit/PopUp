@@ -12,13 +12,13 @@ import UIKit
 extension UIViewController
 {
     
-    static var toolTipView = ToolTipView()
+    static var toolTipView : ToolTipView?
     
     //Adding the template View with only text
     func addedToBagToolTip(){
         
         //Localize String....
-       addToolTip(text: "Added To Bag")
+        addToolTip(text: "Added To Bag")
     }
     
     // Adding the template View of Image and Text
@@ -34,35 +34,39 @@ extension UIViewController
         
         //Font Size
         let fontSize : CGFloat = 18.0
-    
-       let imageNText = imageAndText(text: text, imageName: imageName, fontFamily: fontFamily, fontSize: fontSize)
+        
+        let imageNText = imageAndText(text: text, imageName: imageName, fontFamily: fontFamily, fontSize: fontSize)
         
         addToolTipWithImage(textWithImage: imageNText)
-    
+        
     }
     
     //Func to addToolTip with user defined Message No image
     func addToolTip(text : String?){
         
-        UIViewController.toolTipView = ToolTipView()
-        UIViewController.toolTipView.labelText = text ?? ""
-        
-        displayToolTip(toolTipView: UIViewController.toolTipView)
+        if UIViewController.toolTipView == nil{
+            UIViewController.toolTipView = ToolTipView()
+            UIViewController.toolTipView!.labelText = text ?? ""
+            
+            displayToolTip(toolTipView: UIViewController.toolTipView!)
+        }
         
     }
     
     //Func to addToolTip with user defined Message and Image
     func addToolTipWithImage(textWithImage : NSAttributedString){
         
-        UIViewController.toolTipView = ToolTipView()
-        UIViewController.toolTipView.labelTextWithImage = textWithImage
-
-        
-        displayToolTip(toolTipView: UIViewController.toolTipView)
+        if UIViewController.toolTipView == nil{
+            UIViewController.toolTipView = ToolTipView()
+            UIViewController.toolTipView!.labelTextWithImage = textWithImage
+            
+            
+            displayToolTip(toolTipView: UIViewController.toolTipView!)
+        }
         
     }
     
-
+    
     // For Display The Tooltip
     func displayToolTip(toolTipView : UIView){
         
@@ -73,7 +77,7 @@ extension UIViewController
         
         toolTipView.alpha = 0
         
-
+        
         
         UIView.animate(withDuration: 1, animations: {
             toolTipView.alpha = 1
@@ -88,11 +92,11 @@ extension UIViewController
         NSLayoutConstraint(item: toolTipView, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: navigationController?.navigationBar, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -10).isActive = true
         
         
-       NSLayoutConstraint(item: toolTipView, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.greaterThanOrEqual, toItem: self.view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: 50).isActive = true
+        NSLayoutConstraint(item: toolTipView, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.greaterThanOrEqual, toItem: self.view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: 50).isActive = true
         
-       NSLayoutConstraint(item: toolTipView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 500).isActive = true
+        NSLayoutConstraint(item: toolTipView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.lessThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 500).isActive = true
         
-       
+        
         
     }
     
@@ -125,7 +129,7 @@ extension UIViewController
         
         
         let image1String = NSMutableAttributedString(attributedString: NSAttributedString(attachment: image1Attachment))
-
+        
         //spaced String appended
         image1String.append(NSAttributedString(string: "   "))
         
@@ -134,18 +138,21 @@ extension UIViewController
         
         return image1String
         
-
+        
     }
     
     func dismissToolTipView(){
-       
-        UIView.animate(withDuration: 1, delay: 5, options: .curveEaseOut, animations: {
-            UIViewController.toolTipView.alpha = 0
-        }) { (bool) in
-             UIViewController.toolTipView.removeFromSuperview()
+        
+        if UIViewController.toolTipView != nil{
+            UIView.animate(withDuration: 1, delay: 5, options: .curveEaseOut, animations: {
+                UIViewController.toolTipView!.alpha = 0
+            }) { (bool) in
+                UIViewController.toolTipView!.removeFromSuperview()
+                UIViewController.toolTipView = nil
+            }
+            
         }
         
-    
         
         
     }

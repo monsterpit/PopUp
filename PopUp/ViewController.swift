@@ -45,8 +45,8 @@ class ViewController: UIViewController {
     
     @objc
     func addToBag(){
-        giftItemImageAddedToBagToolTip()
-       //addedToBagToolTip()
+       // giftItemImageAddedToBagToolTip()
+       addedToBagToolTip()
     }
     
     
